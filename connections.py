@@ -1,7 +1,5 @@
 from nio import AsyncClient
 
-from typing import Dict
-
 
 class CredentialsManager:
     """
@@ -12,7 +10,7 @@ class CredentialsManager:
     """
 
     @staticmethod
-    def load_credentials(file_path: str) -> Dict[str, str]:
+    def load_credentials(file_path: str) -> dict[str, str]:
         """
         Load credentials from the given file path.
 
@@ -28,7 +26,7 @@ class CredentialsManager:
         Raises:
             ValueError: If "password" is not found in the credentials file.
         """
-        credentials = {}
+        credentials: dict = {}
         with open(file_path, 'r') as file:
             for line in file.readlines():
                 if not line.strip().startswith("#") and ":" in line:
@@ -37,6 +35,7 @@ class CredentialsManager:
         if "password" not in credentials:
             raise ValueError("Password not found in the credentials file.")
         return credentials
+
 
 class ClientFactory:
     """

@@ -1,6 +1,7 @@
 import json
 import hashlib
 import datetime
+from typing import Optional, Union
 
 
 class RollLogger:
@@ -11,15 +12,15 @@ class RollLogger:
         LOG_FILE (str): Name of the file where logs are stored.
         logs (list): List containing the logs.
     """
-    LOG_FILE = 'dice_rolls.json'
+    LOG_FILE: str = 'dice_rolls.json'
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes a new instance of the Logger class and loads existing logs.
         """
-        self.logs = self.load_logs()
+        self.logs: list[dict[str, Union[str, list[str, str]]]] = self.load_logs()
 
-    def load_logs(self):
+    def load_logs(self) -> list[dict[str, Union[str, list[str, str]]]]:
         """Loads the logs from the LOG_FILE.
 
         Returns:
@@ -40,14 +41,14 @@ class RollLogger:
             print("Error decoding JSON from the log file.")
             return []
 
-    def save_logs(self):
+    def save_logs(self) -> None:
         """
         Saves the current logs to the LOG_FILE.
         """
         with open(self.LOG_FILE, 'w') as f:
             json.dump(self.logs, f)
 
-    def log_roll(self, roll_data):
+    def log_roll(self, roll_data: dict[str, str]) -> str:
         """
         Logs a new dice roll.
 
@@ -55,7 +56,7 @@ class RollLogger:
             roll_data (dict): Data related to the dice roll.
 
         Returns:
-            str: Hash of the logged roll.
+            str: A unique hash generated based on the current timestamp, representing the logged roll.
         """
         current_time = datetime.datetime.now().isoformat()
         roll_hash = hashlib.md5(current_time.encode()).hexdigest()
@@ -72,7 +73,7 @@ class RollLogger:
         self.save_logs()
         return roll_hash
 
-    def get_roll_by_hash(self, roll_hash):
+    def get_roll_by_hash(self, roll_hash: str) -> Optional[dict[str, str]]:
         """
         Retrieves a die roll log using its hash.
 
@@ -82,7 +83,6 @@ class RollLogger:
         Returns:
             dict: Data related to the dice roll. None if the roll is not found.
         """
-        print(roll_hash)
         for log in self.logs:
             if log['hash'] == roll_hash:
                 return log['roll_data']
@@ -97,16 +97,16 @@ class BotLogger:
         timestamp_file (str): The name of the file where the timestamp of the last response is stored.
     """
 
-    def __init__(self, timestamp_file="last_response_timestamp.txt"):
+    def __init__(self, timestamp_file: str = "last_response_timestamp.txt") -> None:
         """
         Initializes the BotLogger object with an optional file to store the timestamp.
 
         Args:
             timestamp_file (str), optional: name of the file to store the timestamp.
         """
-        self.timestamp_file = timestamp_file
+        self.timestamp_file: str = timestamp_file
 
-    def save_timestamp(self):
+    def save_timestamp(self) -> None:
         """
         Saves the current timestamp to a file.
 
@@ -116,13 +116,13 @@ class BotLogger:
         with open(self.timestamp_file, "w") as file:
             file.write(str(datetime.datetime.now()))
 
-    def get_last_timestamp(self):
+    def get_last_timestamp(self) -> datetime.datetime:
         """
         Reads and returns the last timestamp from the file.
 
         Returns:
             datetime.datetime: The last timestamp from the file.
-                else if the file does not exist or invalid format, returns 1900-01-01.
+                If the file does not exist or has an invalid format, it returns a timestamp representing 1900-01-01.
         Raises:
             IOError: If the file cannot be read from.
         """

@@ -9,7 +9,7 @@ class Die:
         sides (int): Number of sides on the dice.
     """
 
-    def __init__(self, sides):
+    def __init__(self, sides: int):
         """
         Initializes a new instance of the Die class.
 
@@ -20,11 +20,11 @@ class Die:
             ValueError: If the number of sides is not between 2 and 1000.
         """
         if 2 <= sides <= 1000:
-            self.sides = sides
+            self.sides: int = sides
         else:
             raise ValueError("Number of sides should be between 2 and 1000")
 
-    def roll(self):
+    def roll(self) -> int:
         """
         Rolls the dice and returns a random number between 1 and the number of sides.
 

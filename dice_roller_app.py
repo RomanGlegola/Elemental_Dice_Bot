@@ -1,5 +1,6 @@
 from logger import RollLogger
 from roller import Roller
+from typing import Optional
 
 
 class DiceRollerApp:
@@ -9,22 +10,10 @@ class DiceRollerApp:
 
     Attributes:
     No public attributes.
-
-    Methods:
-    roll_dice(num_dice, sides, roll_type="normal", modifier=0, threshold=None) -> tuple:
-        Rolls dice based on the given parameters and logs the result.
-
-    reroll(roll_hash) -> tuple:
-        Performs a reroll based on a previously logged roll using its hash.
     """
 
-    def __init__(self):
-        """
-        Initializes a new instance of the DiceRollerApp class.
-        """
-        pass
-
-    def roll_dice(self, num_dice, sides, roll_type="normal", modifier=0, threshold=None):
+    def roll_dice(self, num_dice: int, sides: int, roll_type: str = "normal", modifier: int = 0,
+                  threshold: Optional[int] = None) -> tuple[int, int]:
         """
         Rolls dice based on the given parameters and logs the result.
 
@@ -49,9 +38,9 @@ class DiceRollerApp:
         if roll_type == "normal":
             results = roller.normal_roll(modifier)
         elif roll_type == "e":
-            results = roller.exploding_roll(threshold, modifier)
+            results = roller.exploding_roll(modifier)
         elif roll_type == "i":
-            results = roller.imploding_roll(threshold, modifier)
+            results = roller.imploding_roll(modifier)
         elif roll_type == "dh":
             results = roller.drop_high(modifier)
         elif roll_type == "dl":
@@ -76,7 +65,7 @@ class DiceRollerApp:
 
         return results, roll_hash
 
-    def reroll(self, roll_hash):
+    def reroll(self, roll_hash: str) -> tuple[int, int]:
         """
         Performs a reroll based on a previously logged roll using its hash.
 

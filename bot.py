@@ -28,9 +28,9 @@ class MatrixRollBot:
             client: The Matrix client instance.
             logger: An instance of the logging utility.
         """
-        self.client = client
-        self.logger = logger
-        self.credentials = CredentialsManager.load_credentials("credentials.txt")
+        self.client: AsyncClient = client
+        self.logger: BotLogger = logger
+        self.credentials: dict = CredentialsManager.load_credentials("credentials.txt")
 
     async def invite_callback(self, room: MatrixRoom, event: InviteEvent):
         """
@@ -54,12 +54,12 @@ class MatrixRollBot:
             event: The event details, containing information about the message.
 
         """
-        last_response_time = self.logger.get_last_timestamp()
-        response_message = ''
-        message_time = datetime.fromtimestamp(event.server_timestamp / 1000.0)
+        last_response_time: datetime = self.logger.get_last_timestamp()
+        response_message: str = ''
+        message_time: datetime = datetime.fromtimestamp(event.server_timestamp / 1000.0)
 
         if message_time > last_response_time:
-            user_name = event.sender.split(":")[0][1:]
+            user_name: str = event.sender.split(":")[0][1:]
 
             if isinstance(event, RoomMessageText):
                 if event.body == '/ping':
