@@ -23,3 +23,6 @@ class PipInstaller:
             packages = file.readlines()
         for package in packages:
             subprocess.call(["pip", "install", package])
+
+if __name__ == "__main__":
+    PipInstaller.install_from_requirements()
