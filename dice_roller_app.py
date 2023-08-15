@@ -31,8 +31,9 @@ class DiceRollerApp:
         Args:
             num_dice (int): Number of dice to be rolled.
             sides (int): Number of sides on each dice.
-            roll_type (str): Type of the roll (normal, exploding, imploding, drop_high, drop_low,
-                             keep_high, keep_low). Default is "normal".
+            roll_type (str): Type of the roll. Default is "normal". (
+                'normal' - default roll, 'e' - exploding, 'i' - imploding,
+                'dh' - drop_high, 'dl' - drop_low, 'kh' - keep_high, 'kl' - keep_low).
             modifier (int): Modifier to be added to the sum of the dice rolls. Default is 0.
             threshold (int, optional): Threshold value for exploding or imploding rolls.
 
@@ -47,17 +48,17 @@ class DiceRollerApp:
 
         if roll_type == "normal":
             results = roller.normal_roll(modifier)
-        elif roll_type == "exploding":
+        elif roll_type == "e":
             results = roller.exploding_roll(threshold, modifier)
-        elif roll_type == "imploding":
+        elif roll_type == "i":
             results = roller.imploding_roll(threshold, modifier)
-        elif roll_type == "drop_high":
+        elif roll_type == "dh":
             results = roller.drop_high(modifier)
-        elif roll_type == "drop_low":
+        elif roll_type == "dl":
             results = roller.drop_low(modifier)
-        elif roll_type == "keep_high":
+        elif roll_type == "kh":
             results = roller.keep_high(modifier)
-        elif roll_type == "keep_low":
+        elif roll_type == "kl":
             results = roller.keep_low(modifier)
         else:
             raise ValueError("Invalid roll type")
