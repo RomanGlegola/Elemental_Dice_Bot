@@ -2,7 +2,8 @@ import json
 import hashlib
 import datetime
 
-class Logger:
+
+class RollLogger:
     """
     Logs dice rolls and provides functionalities to access and manage the logs.
 
@@ -11,7 +12,7 @@ class Logger:
         logs (list): List containing the logs.
     """
     LOG_FILE = 'dice_rolls.json'
-    
+
     def __init__(self):
         """
         Initializes a new instance of the Logger class and loads existing logs.
@@ -30,17 +31,22 @@ class Logger:
                 if isinstance(data, list):
                     return data
                 else:
+                    print("File content is not a list.")
                     return []
-        except (FileNotFoundError, json.JSONDecodeError):
+        except FileNotFoundError:
+            print(f"File {self.LOG_FILE} not found.")
             return []
-    
+        except json.JSONDecodeError:
+            print("Error decoding JSON from the log file.")
+            return []
+
     def save_logs(self):
         """
         Saves the current logs to the LOG_FILE.
         """
         with open(self.LOG_FILE, 'w') as f:
             json.dump(self.logs, f)
-    
+
     def log_roll(self, roll_data):
         """
         Logs a new dice roll.
@@ -62,13 +68,13 @@ class Logger:
             'time': current_time,
             'roll_data': roll_data
         })
-        
+
         self.save_logs()
         return roll_hash
-    
+
     def get_roll_by_hash(self, roll_hash):
         """
-        Retrieves a dice roll log using its hash.
+        Retrieves a die roll log using its hash.
 
         Args:
             roll_hash (str): Hash of the roll to retrieve.
@@ -76,7 +82,53 @@ class Logger:
         Returns:
             dict: Data related to the dice roll. None if the roll is not found.
         """
+        print(roll_hash)
         for log in self.logs:
             if log['hash'] == roll_hash:
                 return log['roll_data']
         return None
+
+
+class BotLogger:
+    """
+    BotLogger is used to log the timestamp of the bot last response.
+
+    Attributes:
+        timestamp_file (str): The name of the file where the timestamp of the last response is stored.
+    """
+
+    def __init__(self, timestamp_file="last_response_timestamp.txt"):
+        """
+        Initializes the BotLogger object with an optional file to store the timestamp.
+
+        Args:
+            timestamp_file (str), optional: name of the file to store the timestamp.
+        """
+        self.timestamp_file = timestamp_file
+
+    def save_timestamp(self):
+        """
+        Saves the current timestamp to a file.
+
+        Raises:
+            IOError: If the file cannot be written to.
+        """
+        with open(self.timestamp_file, "w") as file:
+            file.write(str(datetime.datetime.now()))
+
+    def get_last_timestamp(self):
+        """
+        Reads and returns the last timestamp from the file.
+
+        Returns:
+            datetime.datetime: The last timestamp from the file.
+                else if the file does not exist or invalid format, returns 1900-01-01.
+        Raises:
+            IOError: If the file cannot be read from.
+        """
+        try:
+            with open(self.timestamp_file, "r") as file:
+                last_timestamp = file.read().strip()
+                return datetime.datetime.fromisoformat(last_timestamp)
+        except (FileNotFoundError, ValueError):
+            return datetime.datetime(year=1900, month=1, day=1)

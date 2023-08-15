@@ -1,0 +1,14 @@
+[
+  {
+    "hash": "",
+    "time": "YYYY-MM-DDThh:mm:ss.nnnnnn",
+    "roll_data": {
+      "type": "normal",
+      "num_dice": 1,
+      "sides": 10,
+      "modifier": 0,
+      "threshold": null,
+      "results": [[1], [1, 0]]
+    }
+  }
+]
