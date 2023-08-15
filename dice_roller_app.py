@@ -1,4 +1,4 @@
-from logger import Logger
+from logger import RollLogger
 from roller import Roller
 
 
@@ -70,7 +70,7 @@ class DiceRollerApp:
             'threshold': threshold,
             'results': results
         }
-        logger_instance = Logger()
+        logger_instance = RollLogger()
         roll_hash = logger_instance.log_roll(roll_data=roll_data)
 
         return results, roll_hash
@@ -88,7 +88,7 @@ class DiceRollerApp:
         Raises:
             ValueError: If the roll associated with the provided hash is not found.
         """
-        logger_instance = Logger()
+        logger_instance = RollLogger()
         roll_data = logger_instance.get_roll_by_hash(roll_hash)
         if not roll_data:
             raise ValueError("Roll not found")
