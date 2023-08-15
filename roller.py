@@ -1,12 +1,15 @@
-from dice import Die
 from typing import Optional
+
+from dice import Die
+
 
 class Roller:
     """Handles various types of dice rolls and related operations.
 
     Attributes:
         num_dice (int): Number of dice to be rolled.
-        die (Die): Instance of Die class representing a dice with specified number of sides.
+        die (Die): Instance of Die class representing
+            a dice with specified number of sides.
     """
 
     def __init__(self, num_dice: int, sides: int):
@@ -20,7 +23,9 @@ class Roller:
         self.num_dice: int = num_dice
         self.die: Die = Die(sides)
 
-    def normal_roll(self, modifier: int = 0) -> tuple[list[int, ...], list[int, int]]:
+    def normal_roll(
+        self, modifier: int = 0
+    ) -> tuple[list[int, ...], list[int, int]]:
         """
         Performs a normal roll of the dice.
 
@@ -29,14 +34,18 @@ class Roller:
 
         Returns:
             tuple: First element is a list of individual dice rolls.
-                   Second element is a tuple with total sum after adding the modifier and the modifier itself.
+                   Second element is a tuple with total sum after
+                        adding the modifier and the modifier itself.
         """
         rolls: list[int, ...] = [self.die.roll() for _ in range(self.num_dice)]
         return rolls, [sum(rolls) + modifier, modifier]
 
-    def exploding_roll(self, threshold: Optional[int] = None, modifier: int = 0) -> tuple[list[int], list[int]]:
+    def exploding_roll(
+            self, threshold: Optional[int] = None, modifier: int = 0
+    ) -> tuple[list[int], list[int]]:
         """
-        Performs an exploding roll where additional rolls are made for dice values above a threshold.
+        Performs an exploding roll where additional rolls are
+            made for dice values above a threshold.
 
         Args:
             threshold (Optional[int]): Threshold value above which additional rolls are made.
@@ -51,12 +60,19 @@ class Roller:
         while i < len(rolls):
             if rolls[i] >= threshold:
                 rolls.append(self.die.roll())
+                i -= 1
             i += 1
-        return rolls, [sum(rolls) + modifier, modifier]
+        return rolls, [
+            sum(roll for roll in rolls if isinstance(roll, int)) + modifier,
+            modifier,
+        ]
 
-    def imploding_roll(self, threshold: Optional[int] = None, modifier: int = 0) -> tuple[list[int], list[int]]:
+    def imploding_roll(
+        self, threshold: Optional[int] = None, modifier: int = 0
+    ) -> tuple[list[int], list[int]]:
         """
-        Performs an imploding roll where additional rolls are made for dice values under a given threshold.
+        Performs an imploding roll where additional rolls are
+            made for dice values under a given threshold.
 
         Args:
             threshold (Optional[int]): Threshold value under which additional rolls are made.
@@ -64,7 +80,8 @@ class Roller:
 
         Returns:
             tuple: First element is a list of individual dice rolls.
-                   Second element is a tuple with total sum after adding the modifier and the modifier itself.
+                   Second element is a tuple with total sum after
+                        adding the modifier and the modifier itself.
         """
         rolls: list[int, ...] = self.normal_roll(modifier)[0]
         threshold = 1 if threshold is None else threshold
@@ -75,7 +92,9 @@ class Roller:
             i += 1
         return rolls, [sum(rolls) + modifier, modifier]
 
-    def drop_high(self, modifier: int = 0) -> tuple[list[int, ...], list[int, int]]:
+    def drop_high(
+        self, modifier: int = 0
+    ) -> tuple[list[int, ...], list[int, int]]:
         """
         Performs a dice roll and drops the highest roll.
 
@@ -84,14 +103,20 @@ class Roller:
 
         Returns:
             tuple: First element is a list of individual dice rolls.
-                   Second element is a tuple with total sum after adding the modifier and the modifier itself.
+                   Second element is a tuple with total sum after
+                        adding the modifier and the modifier itself.
         """
         rolls: list[int, ...] = self.normal_roll(modifier)[0]
         max_val = max(rolls)
-        rolls[rolls.index(max_val)] = 'DH'
-        return rolls, [sum([roll for roll in rolls if isinstance(roll, int)]) + modifier, modifier]
+        rolls[rolls.index(max_val)] = "DH"
+        return rolls, [
+            sum(roll for roll in rolls if isinstance(roll, int)) + modifier,
+            modifier,
+        ]
 
-    def drop_low(self, modifier: int = 0) -> tuple[list[int, ...], list[int, int]]:
+    def drop_low(
+        self, modifier: int = 0
+    ) -> tuple[list[int, ...], list[int, int]]:
         """
         Performs a dice roll and drops the lowest roll.
 
@@ -100,14 +125,20 @@ class Roller:
 
         Returns:
             tuple: First element is a list of individual dice rolls.
-                   Second element is a tuple with total sum after adding the modifier and the modifier itself.
+                   Second element is a tuple with total sum after
+                        adding the modifier and the modifier itself.
         """
         rolls: list[int, ...] = self.normal_roll(modifier)[0]
         min_val = min(rolls)
-        rolls[rolls.index(min_val)] = 'DL'
-        return rolls, [sum([roll for roll in rolls if isinstance(roll, int)]) + modifier, modifier]
+        rolls[rolls.index(min_val)] = "DL"
+        return rolls, [
+            sum(roll for roll in rolls if isinstance(roll, int)) + modifier,
+            modifier,
+        ]
 
-    def keep_high(self, modifier: int = 0) -> tuple[list[int, ...], list[int, int]]:
+    def keep_high(
+        self, modifier: int = 0
+    ) -> tuple[list[int, ...], list[int, int]]:
         """
         Performs a dice roll and keeps only the highest roll.
 
@@ -116,14 +147,20 @@ class Roller:
 
         Returns:
             tuple: First element is a list of individual dice rolls.
-                   Second element is a tuple with total sum after adding the modifier and the modifier itself.
+                   Second element is a tuple with total sum after
+                        adding the modifier and the modifier itself.
         """
         rolls: list[int, ...] = self.normal_roll(modifier)[0]
         max_val = max(rolls)
-        rolls = ['KH' if roll != max_val else max_val for roll in rolls]
-        return rolls, [sum([roll for roll in rolls if isinstance(roll, int)]) + modifier, modifier]
+        rolls = ["KH" if roll != max_val else max_val for roll in rolls]
+        return rolls, [
+            sum(roll for roll in rolls if isinstance(roll, int)) + modifier,
+            modifier,
+        ]
 
-    def keep_low(self, modifier: int = 0) -> tuple[list[int, ...], list[int, int]]:
+    def keep_low(
+        self, modifier: int = 0
+    ) -> tuple[list[int, ...], list[int, int]]:
         """
         Performs a dice roll and keeps only the lowest roll.
 
@@ -132,9 +169,13 @@ class Roller:
 
         Returns:
             tuple: First element is a list of individual dice rolls.
-                   Second element is a tuple with total sum after adding the modifier and the modifier itself.
+                   Second element is a tuple with total sum after
+                        adding the modifier and the modifier itself.
         """
         rolls: list[int, ...] = self.normal_roll(modifier)[0]
         min_val = min(rolls)
-        rolls = ['KL' if roll != min_val else min_val for roll in rolls]
-        return rolls, [sum([roll for roll in rolls if isinstance(roll, int)]) + modifier, modifier]
+        rolls = ["KL" if roll != min_val else min_val for roll in rolls]
+        return rolls, [
+            sum(roll for roll in rolls if isinstance(roll, int)) + modifier,
+            modifier,
+        ]

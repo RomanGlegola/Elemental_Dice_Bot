@@ -1,19 +1,26 @@
+from typing import Optional
+
 from logger import RollLogger
 from roller import Roller
-from typing import Optional
 
 
 class DiceRollerApp:
     """
-    A dice roller application that provides functionalities to roll dice with various options and
-    reroll based on previous roll logs.
+    A dice roller application that provides functionalities to roll
+        dice with various options and reroll based on previous roll logs.
 
     Attributes:
-    No public attributes.
+        No public attributes.
     """
 
-    def roll_dice(self, num_dice: int, sides: int, roll_type: str = "normal", modifier: int = 0,
-                  threshold: Optional[int] = None) -> tuple[int, int]:
+    def roll_dice(
+        self,
+        num_dice: int,
+        sides: int,
+        roll_type: str = "normal",
+        modifier: int = 0,
+        threshold: Optional[int] = None,
+    ) -> tuple[int, int]:
         """
         Rolls dice based on the given parameters and logs the result.
 
@@ -53,19 +60,19 @@ class DiceRollerApp:
             raise ValueError("Invalid roll type")
 
         roll_data = {
-            'type': roll_type,
-            'num_dice': num_dice,
-            'sides': sides,
-            'modifier': modifier,
-            'threshold': threshold,
-            'results': results
+            "type": roll_type,
+            "num_dice": num_dice,
+            "sides": sides,
+            "modifier": modifier,
+            "threshold": threshold,
+            "results": results,
         }
         logger_instance = RollLogger()
         roll_hash = logger_instance.log_roll(roll_data=roll_data)
 
         return results, roll_hash
 
-    def reroll(self, roll_hash: str) -> tuple[int, int]:
+    def reroll_dice(self, roll_hash: str) -> tuple[int, int]:
         """
         Performs a reroll based on a previously logged roll using its hash.
 
@@ -80,13 +87,14 @@ class DiceRollerApp:
         """
         logger_instance = RollLogger()
         roll_data = logger_instance.get_roll_by_hash(roll_hash)
+
         if not roll_data:
             raise ValueError("Roll not found")
 
         return self.roll_dice(
-            roll_data['num_dice'],
-            roll_data['sides'],
-            roll_data['type'],
-            roll_data['modifier'],
-            roll_data['threshold']
+            roll_data["num_dice"],
+            roll_data["sides"],
+            roll_data["type"],
+            roll_data["modifier"],
+            roll_data["threshold"],
         )

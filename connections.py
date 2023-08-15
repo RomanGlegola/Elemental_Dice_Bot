@@ -27,7 +27,7 @@ class CredentialsManager:
             ValueError: If "password" is not found in the credentials file.
         """
         credentials: dict = {}
-        with open(file_path, 'r') as file:
+        with open(file_path, "r", encoding='utf-8') as file:
             for line in file.readlines():
                 if not line.strip().startswith("#") and ":" in line:
                     key, value = line.strip().split(":", 1)
@@ -54,4 +54,8 @@ class ClientFactory:
             AsyncClient: An instance of AsyncClient.
         """
         credentials = CredentialsManager.load_credentials("credentials.txt")
-        return AsyncClient(homeserver=credentials["homeserver"], user=credentials["username"], device_id=None)
+        return AsyncClient(
+            homeserver=credentials["homeserver"],
+            user=credentials["username"],
+            device_id=None,
+        )
