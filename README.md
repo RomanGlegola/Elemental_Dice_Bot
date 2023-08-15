@@ -4,10 +4,10 @@
 Elemental_Dice_Bot is a Python program that operates on the Matrix platform. It allows for the handling of dice rolling commands.
 
 ## Requirements
-To run the program, you must have Python version 3.7 or newer installed. Additionally, the program requires several external libraries, which will be automatically installed upon first launch.
+To run the program, you must have Python version 3.11 or newer installed. Additionally, the program requires several external libraries, which will be automatically installed upon first launch.
 
 ## Usage
-1. Ensure that you have Python version 3.7 or newer installed.
+1. Ensure that you have Python version 3.11 or newer installed.
 2. Download and unzip the program files on your computer.
 3. Run the bot_execute.bat script. This script will install the required libraries and start the program.
 4. Follow the instructions displayed on the screen.
